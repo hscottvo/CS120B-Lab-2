@@ -18,17 +18,19 @@ int main(void) {
 	DDRB = 0xFF; PORTB = 0x00; // Configure 8 pins of B into outputs, initialize to 0s
     /* Insert your solution below */
 	unsigned char tmpB = 0x00;
-	unsigned char tmpA = 0x00;	
+	unsigned char tmpA0 = 0x00;	
+	unsigned char tmpA1 = 0x00;
 
     while (1) {
 	// read input
-	tmpA = PINA & 0x01;
+	tmpA0 = PINA & 0x01;
+	tmpA1 = (PINA >> 1) & 0x01;
 	// computation: if PA0 == 1 -> set PB1PB0 = 01, else = 10
-	if (tmpA == 0x01) {
-		tmpB = (tmpB & 0xFC) | 0x01;
+	if (tmpA0 == 0x01 && tmpA1 == 0x00) {
+		tmpB = (tmpB & 0xFE) | 0x01;
 	}
 	else {
-		tmpB = (tmpB & 0xFC) | 0x02;
+		tmpB = (tmpB & 0xFE) | 0x00;
 	}
 	PORTB = tmpB;
     }
